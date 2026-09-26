@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Add New Transfer - TraceBorrow{% endblock %}
+{% block content %}
+<div class="card form-card wide-form">
+    <h1 class="page-title">Add New Transfer</h1>
+    <p class="subtitle">The physical handover happens first. Use this form to record who has the item now.</p>
+
+    <form method="POST" action="{{ url_for('add_transfer') }}">
+        <div class="form-group">
+            <label>Transferring User</label>
+            <input type="text" value="{{ current_user['username'] }}" readonly class="readonly-input">
+            <p class="help-text">Automatically taken from your login.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="borrower_username">Borrower Username</label>
+            <input list="usernames" type="text" id="borrower_username" name="borrower_username" value="{{ borrower_username or '' }}" placeholder="Enter their username" required>
+            <datalist id="usernames">
+                {% for person in people %}
+                <option value="{{ person['username'] }}">
+                {% endfor %}
+            </datalist>
+        </div>
+
+        <div class="form-group">
+            <label for="item_description">Item Description</label>
+            <textarea id="item_description" name="item_description" rows="4" placeholder="Example: Black HDMI cable - Anker 2m" required>{{ item_description or '' }}</textarea>
+            <p class="help-text">Use the same description every time this item changes hands. A return is simply a new transfer back to the person who should receive the item.</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Save Transfer</button>
+    </form>
+
+    <p class="back-link"><a href="{{ url_for('dashboard') }}">← Back to Dashboard</a></p>
+</div>
+{% endblock %}

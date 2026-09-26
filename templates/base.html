@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TraceBorrow{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="{{ url_for('dashboard') if current_user else url_for('index') }}" class="brand">📦 TraceBorrow</a>
+        {% if current_user %}
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('add_transfer') }}" class="nav-cta">+ Add New Transfer</a>
+            <a href="{{ url_for('logout') }}">Logout ({{ current_user['username'] }})</a>
+        </div>
+        {% else %}
+        <div class="nav-links">
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}" class="nav-cta">Register</a>
+        </div>
+        {% endif %}
+    </div>
+</nav>
+
+<main class="page-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-stack">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">TraceBorrow — Record where a lent item goes.</footer>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Register - TraceBorrow{% endblock %}
+{% block content %}
+<div class="card form-card">
+    <h1 class="page-title">Create Account</h1>
+    <p class="subtitle">Choose a username that other TraceBorrow users can enter when lending to you.</p>
+    <form method="POST" action="{{ url_for('register') }}">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="{{ username or '' }}" required autofocus>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" minlength="6" required>
+        </div>
+        <div class="form-group">
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+    </form>
+    <p class="subtitle footer-link">Already registered? <a href="{{ url_for('login') }}">Login</a></p>
+</div>
+{% endblock %}

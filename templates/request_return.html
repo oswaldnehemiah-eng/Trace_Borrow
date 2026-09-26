@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Request Item Back - TraceBorrow{% endblock %}
+{% block content %}
+<div class="card form-card wide-form">
+    <h1 class="page-title">Request Item Back</h1>
+    <p class="subtitle">Enter the exact item description. TraceBorrow will find its current holder and send them a return request.</p>
+
+    <form method="POST" action="{{ url_for('request_return') }}">
+        <div class="form-group">
+            <label for="item_description">Item Description</label>
+            <textarea id="item_description" name="item_description" rows="4" placeholder="Example: Pentonic pen blue" required></textarea>
+            <p class="help-text">Use the same description that was used when the item changed hands.</p>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Send Return Request</button>
+    </form>
+
+    <p class="back-link"><a href="{{ url_for('dashboard') }}">← Back to Dashboard</a></p>
+</div>
+{% endblock %}

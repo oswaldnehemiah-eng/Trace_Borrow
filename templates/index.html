@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}TraceBorrow{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>TraceBorrow</h1>
+    <p class="tagline">Record who has your item.</p>
+    <p class="lede">The physical handover happens outside the software. TraceBorrow only records the lender, borrower, item description, and date.</p>
+    <div class="hero-buttons">
+        <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+        <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - TraceBorrow{% endblock %}
+{% block content %}
+<div class="dashboard-heading">
+    <h1 class="page-title">Hello, {{ current_user['username'] }}</h1>
+    <p class="subtitle">Track where the items you lend or borrow are currently.</p>
+</div>
+
+{% if pending_requests %}
+<section class="request-section">
+    <div class="section-heading-row">
+        <h2>Return Requests</h2>
+        <span class="request-badge">{{ pending_requests|length }} new</span>
+    </div>
+    <div class="request-list">
+        {% for row in pending_requests %}
+        <div class="request-card">
+            <div>
+                <strong>{{ row['requester_username'] }}</strong> has requested the return of <strong>{{ row['item_description'] }}</strong>.
+                <div class="request-time">{{ row['requested_at']|datetime_short }}</div>
+            </div>
+            <span class="request-note">Please record the return with “+ Add New Transfer”.</span>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<div class="stats-two">
+    <div class="stat-card">
+        <div class="stat-number">{{ counts.with_me }}</div>
+        <div class="stat-label">Currently With Me</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ counts.with_others }}</div>
+        <div class="stat-label">With Other People</div>
+    </div>
+</div>
+
+<div class="quick-section">
+    <div class="section-heading-row">
+        <h2>Quick Action</h2>
+        <a href="{{ url_for('request_return') }}" class="small-link">Request an item back</a>
+    </div>
+    <a href="{{ url_for('add_transfer') }}" class="action-card single-action">
+        <strong>+ Add New Transfer</strong>
+        <span>Record a physical handover.</span>
+    </a>
+</div>
+
+<div class="history-grid">
+    <section class="history-section">
+        <h2>My Lending History</h2>
+        <p class="history-help">Items that started with you, including later handovers in the same chain.</p>
+        {% if lending_history %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date &amp; Time</th>
+                        <th>Item Description</th>
+                        <th>From</th>
+                        <th>To</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in lending_history %}
+                    <tr>
+                        <td class="date-time">{{ row['transferred_at']|datetime_short }}</td>
+                        <td>{{ row['item_description'] }}</td>
+                        <td>{{ row['from_username'] }}</td>
+                        <td>{{ row['to_username'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">You have not lent any items yet.</div>
+        {% endif %}
+    </section>
+
+    <section class="history-section">
+        <h2>My Borrowing History</h2>
+        <p class="history-help">Items that another TraceBorrow user handed directly to you.</p>
+        {% if borrowing_history %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date &amp; Time</th>
+                        <th>Item Description</th>
+                        <th>Lender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in borrowing_history %}
+                    <tr>
+                        <td class="date-time">{{ row['transferred_at']|datetime_short }}</td>
+                        <td>{{ row['item_description'] }}</td>
+                        <td>{{ row['lender_username'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">You have not borrowed any items yet.</div>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}
